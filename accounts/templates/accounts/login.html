@@ -1,0 +1,30 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+{% block links %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'accounts/login.css' type='text/css'%}">
+{% endblock %}  
+
+{% block content %}
+<video autoplay muted loop id="myVideo">
+    {% load static %}
+
+    <source src="{% static 'data/back.mp4' %}" type="video/mp4">
+  </video>
+  <div class="wrapper">
+
+  <div class="container">
+      <h1>Welcome</h1>
+      <form class="form" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Login</button>
+        </form>
+
+  </div>  
+</div>
+
+
+{% endblock %}

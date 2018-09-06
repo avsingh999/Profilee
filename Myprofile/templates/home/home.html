@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>HOMEin myprofile</h1>
+<div class="container">
+    <form  method="POST">
+        {% csrf_token %}
+        <!-- <input type='text' /> -->
+        {{ form.as_p }}
+        <button type="submit">sumbit</button>
+
+    </form>
+</div>
+<hr/>
+{% for post in posts %}
+<div>
+        <p>{{post.user.first_name}}</p>
+        <h3>{{post.post}}</h3>
+        <strong>{{post.date}}</strong>
+        <br/>
+        <br/>
+        
+        <a href="{% url 'viewpost' post.id %}">
+                view
+            
+        </a>
+        <br/>
+        <br/>
+        {% for postcomment in comments %}
+            {% if postcomment.post.id == post.id %}
+            
+            <div style="color:white; background:black; width:50px;" >
+                    <p>{{postcomment.comment}}</p>
+                    <strong>{{postcomment.user}}</strong>
+            </div>
+               
+
+            {% endif %}
+
+        {% endfor %}
+       
+        <br/>
+        <br/>
+</div>
+<hr/>
+
+{% endfor %}
+
+{% endblock %}
+
+

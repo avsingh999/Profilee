@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+
+<h1>HOMEin myprofile</h1>
+<hr/>
+<p>Hllo g satshree akal</p>
+<p>{{posts.user.first_name}}</p>
+<h3>{{posts.post}}</h3>
+
+<strong>{{posts.date}}</strong>
+<h1 class="kik">{{posts.likee}}</h1>
+
+{% for postcomment in comments %}
+    <div style="color:white; background:black; margin:20px; width:50px;" id="all_posts">
+            <p>{{postcomment.comment}}</p>
+    </div>
+        
+{% endfor %}
+<br/>
+<br/>
+<br/>
+<br/>
+
+<div class="container">
+    <form id = "post_form" method="POST">
+        {% csrf_token %}
+        {{ postcommenting.as_p }}
+        <button type="submit">sumbit</button>
+    </form>
+    <br/>
+    <br/>
+    
+    <form id="likes" action="{% url 'viewpost' id %}" method="POST">
+        {% csrf_token %}
+        {% if LD %}
+        <button type="submit" name="post_id" value="{{posts.likee}}">like</button>
+        {% else %}
+        <button type="submit" name="post_id" value="{{posts.likee}}">Dilike</button>
+        {%endif%}
+    </form>
+   
+</div>
+{% endblock %}
+
+
