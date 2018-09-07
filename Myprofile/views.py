@@ -1,10 +1,12 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect,get_object_or_404, HttpResponse
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from .forms import HomeForm, PostsData, postLike
 from .models import Post,Comments, Like ,Dislike
 from django.template.loader import render_to_string
 import json
+
 
 def HomeView (request):
     template_name = 'home/home.html'
@@ -43,6 +45,7 @@ def viewpost(request,id):
 
     else:
         print("*********************************")
+        print(request.user.is_authenticated)
         template_name = 'home/viewpost.html'
         postcommenting = PostsData(request.POST)
         LD = True

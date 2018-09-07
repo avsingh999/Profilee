@@ -17,8 +17,8 @@ class Post(models.Model):
             blank=True, 
             width_field="width_field", 
             height_field="height_field")
-    height_field = models.IntegerField(default=0)
-    width_field = models.IntegerField(default=0)
+    height_field = models.IntegerField(default=0, null=True)
+    width_field = models.IntegerField(default=0, null = True)
     post =  models.TextField()
     likee = models.IntegerField(default=0)
     date = models.DateTimeField(default=datetime.now,blank=True)
