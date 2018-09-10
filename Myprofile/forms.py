@@ -2,11 +2,11 @@ from django import forms
 from .models import Post,Comments,Like
 
 class HomeForm(forms.ModelForm):
-    post = forms.CharField()
-    
+    # post = forms.CharField()
+    # image = forms.FileField(label='')
     class Meta:
         model = Post
-        fields = ('post',)
+        fields = ('post','image',)
 
 class PostsData(forms.ModelForm):
     comment = forms.CharField()
@@ -19,3 +19,4 @@ class postLike(forms.ModelForm):
     class Meta:
         model = Like
         fields = '__all__' 
+    

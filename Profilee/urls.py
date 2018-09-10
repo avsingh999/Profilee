@@ -18,18 +18,23 @@ from django.urls import path, include
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from Profilee import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'Myprofile'
 
 urlpatterns = [
     # path('', TemplateView.as_view(template_name='home.html'), name='home'),
     # path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('', views.login_redirect, name='login_redirect'),
+    # path('', views.login_redirect, name='login_redirect'),
     path('admin/', admin.site.urls),
     #  path('accounts/', include('django.contrib.auth.urls')),
-    path('account/', include('accounts.urls')),
+    path('', include('accounts.urls')),
     path('Myprofile/', include('Myprofile.urls')),
-    path('api/posts/', include('Myprofile.api.urls')),
+    
    
 
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

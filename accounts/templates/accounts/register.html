@@ -8,23 +8,48 @@
 {% endblock %}  
 
 {% block content %}
-<video autoplay muted loop id="myVideo">
+<!-- <video autoplay muted loop id="myVideo">
     {% load static %}
 
     <source src="{% static 'data/back.mp4' %}" type="video/mp4">
-  </video>
-  <div class="wrapper">
+  </video> -->
+  <div class="container" style="width:50%;"> 
+      <div class="wrapper">
 
-  <div class="container">
       <h1>Welcome</h1>
-      <form class="form" method="post">
+      <form class="form" method="post" >
           {% csrf_token %}
-          {{ form.as_p }}
-          <button type="submit">Login</button>
-        </form>
+          <div class="row">
+                  <input type="text" name="first_name" placeholder="First Name" maxlength="30" id="id_first_name">
+         </div>
+         <div class="row">
+                <input type="text" name="last_name" placeholder="Last Name" maxlength="150" id="id_last_name">
+           </div>
+         <div class="row" >
+               <input type="text" name="username" placeholder="username" maxlength="150" autofocus="" required="" id="id_username">
 
-  </div>  
+          </div>
+          <div class="row">
+                 <input type="email" name="email" placeholder="email" required="" id="id_email">
+
+            </div>
+
+            <div class="row">
+                     <input type="password" name="password1" placeholder="password" required="" id="id_password1"> 
+
+              </div>
+
+              <div class="row">
+                    <input type="password" name="password2" placeholder="confirm password" required="" id="id_password2">
+                </div>
+      
+          <button type="submit">Register</button>
+
+      </form>
+
 </div>
 
+
+</div>
 
 {% endblock %}

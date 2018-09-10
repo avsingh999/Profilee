@@ -1,48 +1,94 @@
 {% extends 'base.html' %}
 
+{% block links %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'accounts/post_detail.css' type='text/css'%}">
+{% endblock %}  
 
-
+{% load crispy_forms_tags %}
 
 {% block content %}
 
-<h1>HOMEin myprofile</h1>
-<hr/>
-<p>Hllo g satshree akal</p>
-<p>{{posts.user.first_name}}</p>
-<h3>{{posts.post}}</h3>
-
-<strong>{{posts.date}}</strong>
-<h1 class="kik">{{posts.likee}}</h1>
-
-{% for postcomment in comments %}
-    <div style="color:white; background:black; margin:20px; width:50px;" id="all_posts">
-            <p>{{postcomment.comment}}</p>
+<div class="container  " >
+<div class="shadow p-3 mb-5 bg-white rounded"  style="width:70%;margin:4%; margin-left:16%;" >
+    <div class="row media  user_info" style="margin:2%;"> 
+            <img class="mr-3" style="width:40px; border-radius: 50%;" src="data:image/png;base64,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" >
+            <b><a href="/Myprofile"><u>{{posts.user.username}}</u></a><br/>{{posts.date}}</b>
     </div>
-        
-{% endfor %}
-<br/>
-<br/>
-<br/>
-<br/>
+    <hr/>
+    <div class="row ">
+                <p style="margin:3%;padding:0%;">{{posts.post}}</p>
+                {% if posts.image %}
+                <div class="media row" >
 
-<div class="container">
-    <form id = "post_form" method="POST">
-        {% csrf_token %}
-        {{ postcommenting.as_p }}
-        <button type="submit">sumbit</button>
-    </form>
-    <br/>
-    <br/>
+                    <img class="mr-3" style="width:90%;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    padding: 5px;
+                    opacity:1;
+                    
+                    padding:5%; margin-left:5%;display:inline;" src="{{ MEDIA_URL }}{{posts.image}}" >
+                </div>
+                {% endif %}
+
+
+    </div>
+    <hr/>
+    <div class="row" style="margin:3%;padding:0%;">
+            <p style="font-size:16px;">{{posts.likee}}</p>
+                    <form id="likes" action="{% url 'commentpost' id %}" method="POST">
+                            {% csrf_token %}
+                            {% if like %}
+                            <button type="submit" name="post_id" value="{{posts.likee}}" style="cursor:pointer;background:#fff; border:#fff;">
+                                    <i class="material-icons red-text text-darken-2">favorite_border</i>
+                                </button>
+                            {% else %}
+                            <button type="submit" name="post_id" value="{{posts.likee}}" style="cursor:pointer;background:#fff; border:#fff;">
+                                    <i class="material-icons text-danger" style="font-size:26px;">favorite</i>
+                                </button>
+                            {%endif%}
+                    </form>
+                    
+                    <button type="submit" data-toggle="collapse" data-target="#demo" name="post_id" value="{{posts.likee}}" style="cursor:pointer;background:#fff; border:#fff;">
+                        <i class="material-icons " >
+                            comment
+                        </i>
+                    </button>                      
+    </div>
+
+    <hr/>
+    <div id="demo" class="collapse" >
+            <div class="container "style="width:97%;">
+                <div class="row  comment_input"  style="margin:3%;padding:0%;">
+                    <form action="{% url 'commentpost' id %}" style="width:100%; padding:4px;" method="POST">
+                            {% csrf_token %}
+                            <input type="text" name="comment" class="textinput textInput"  style="width:100%; padding:4px;" placeholder="comment" required="" id="id_comment" value="">
+                    </form>
+                </div>
+                <div class="row" >
+                        {% for postcomment in comments %}
+                        <div class="container" style="width:100%;">
+                            <div class="row" >
+                                <div class="col-sm-8" > 
+                                    <img class="mr-3" style="width:30px; border-radius: 100%;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHoAAAB6CAMAAABHh7fWAAAAZlBMVEX///8BAQEAAACcnJz7+/vw8PBEREQ2NjZfX1/n5+dsbGz09PTX19e9vb339/dPT0/f39+np6fKysqTk5O2trZJSUkjIyNUVFQ+Pj6EhIR+fn7Dw8Ovr68PDw8xMTHR0dF1dXUZGRmViSi+AAAG2ElEQVRogd1bibKqOBCVgMgqIAiKgPj/PzmKZqXTCcutqZmuV6+uGHLSSe9pD4fFFD6qsg38oXecfvCDsewe+fJZltLx4mY9Aai/lY/w73Dzrqm/QI5C36f1tfgT7o9VMLHrfHF/6OKHCT4r9uY9vL8AZuf0GTTuyXoeWeEy9OC5F3CwAPgHnu0BHo8LgX/oweYz73qdPMsEjHE3AYfBNKkgxxPO0ARvM5Lkb0oeXRk1JwGeDibE3yBv6UtmZ4KNquSoDjwm6XiaMU9IsRa5nQH37tPTDk/cgahvRPEa4PNNmuc963gxvZPcVfB6hbQlvQLs2jFQ1MqKjetV6SFO8P7b1W+0Qp4MTki1DDmV3x5ngoVRXIrbvlDYKPKkWcRfbJryTJpgAfZFWvT9vBT5Te46vnPptcVi8qWkFidJ7V4KReTbolOWqOHzEJLYvHH2hTcia8EGqBWxbViIhPH3DcAH6cDJ1cxE8R1OPsjlNmRxMsfMRsIWSki7FZlhW4najQ+NtiMfDiXHrvHjFkZe90CWRAflJRTWuMrdAXSz2/KMD7NSRBs6Opwd/agHjYY2xBfQrCxF0IZrHjMmJNgPWTAthOjcQcW3e9fsJR4YtMZSCExvi2NnlJrYTm3EYR0FbGqY7Stb2sM8Wfjo7kGWBW1hk1YzN0xqiO0n+/pkmunYXWueeLyu5sR2ZGxDkdrImDYY22NZs2iffPOCvjWAhzQxh3QnflHoAZ8lrecpFjEagoAxNs+GWCRIOnSOO5x3mqIKFu4B2sOWhTuYQJvxkgENH2lGAbgltirUvzRaZBN2wXZc9Q7c0GIRqGa36aSY+eX6pR5oSSXwhOz3dGBYBQmTtRN9pVG+uFns9/mE8PwFR5y8y4RJkUdU5X9UGJDx2O/JjvSpPKfr1tuG2MQ0zjb3XzJ3bDd8vZQ+bEp2iM9rKIa8NXf6eNS/GtlAZ3rDUjL2pMfMoOij/uNgA40c2IMdqvjUG35ag7iOJ5E0yZl9+CqnfoJfdkHkeOHM9F1f6qosmEZlPHxRERdBYqZbeim720Hr7UJ8gwxmzo5BLyWBHXSjncFrKLSoXUytVUsjkG8H7es1O6DQor29UOib9r2DjYB/ZtBDU+2UoGnageV4AyDUgIQjFZDol2xL0DQOxqDNZnQ91wbozA76qtcREJqdNRIHj3bQSLgAQif0Ya+XcHerXsMSHlrotY3jQp2Al0F6za2ZXj4TLC7j0PrQ7niCrNmZBl1IMYFGCqhyYaW5sKfuQ7ThLL/F4n8bS4r564RFSJISsIQLCa46G2jk/YoJlPSYRRCIboQWh41Vf+6w8WDmrJ/OKi1dwHGbdxwtCrD8XVaCIxPxZNICAmV95mABiwrDGtKtw5RyEbqk8fMBiLLi+udlHI2Eo6XnC5My5VCYkWt+kT6UxZQGttFUkR21eigdXdOron/NNy/GBQ0vMQ46SQ55fUmfgxvYRpnmpZpZalWrs4Iigya5PVZQYerbz3Rn5phA6BRL7dFCH2M6U77wzrzY8fsfnikgOglHYtHDRzHpi5L0hmXQ+IOj8ANDh7ODocPxMnbGREk8lRDuc9Hs3wPecsOtKY22FVFsYD50R1dA2KY7Gl4kFYugZ43kaKUG0DC8gsNjP4cMokB4S6H5bYYAjXZECOVu2UQu3HCIbeKgTBfcXslakA/8Ds4xKdeHOqIOxvf7l91+3Is6ZwhWH/XQ89gUFzIuY2T+ZQr102ih5xE5Cs2tN1jS8yJbvT5A0QqWoQq3OZpy96VWwLXQgFFBJZyHg7qeh1htvtFAQ+aMYKVVWpjFTuVyEsuvIPSxamB1IHWb6HLMqZ6Mru7NuNjHA0Dnd+DygTFO/FLjsNuPi7ga+rCe/MRn0JcAaiyTwEkEp1xJV1g0erAbbEUTqpNFt917yAm/OkEp97/tbVI+WAHNdlp0+36lGRWT+xYc68OGYwG7X895Hl0bvt1rOir9lT08bxL0xCXacGyeXzs0zV7YrAVReF3RyjmBvywuZTGq1gF/wTf18qD3WmZw5DbDRHN3thAbtZ1/ieys7hnjHYKLJZx/UNMcK7ps5vkDvaZ7y7OrBJuxl295ugvyrGhjQzYXalbQxqYLlTxNYrAcGgiADdAZrxZtkfD3v3XQu7D9X4L+987a8qrDAnq5PXvuA23qsAHJ7g7TCL2mgSyu93Af/ar2yPi25ncuEstkWPuDm3Ib9jugXh8bhi2e62CwhAQbe1GLAPwNjwmW3MrN0fD7zNO20f6MaAb5IX8swi097SJ5Yd61wXUAfzEoUO0HkXsJ92o3FhZwzJNn2pX3MWquPqcsiNrSrS5J/geg/zv6B5hLS+5liQVYAAAAAElFTkSuQmCC" >                          
+                                    <b><a href="{{posts.user.username}}"><u>{{posts.user.username}}</u></a></b>
+                                </div>
+                                <div class="col-sm-4">
+                                        {{posts.date}}
+                                </div>
+                            </div>
+                            <div class="row"  style="margin:3%;padding:0%;">
+                                    <p>{{postcomment.comment}}</p> 
+                            </div>
+                            <hr/>
+                        </div>
+                        {% endfor %}                     
+                </div>                
+            </div>
+        </div>
     
-    <form id="likes" action="{% url 'viewpost' id %}" method="POST">
-        {% csrf_token %}
-        {% if LD %}
-        <button type="submit" name="post_id" value="{{posts.likee}}">like</button>
-        {% else %}
-        <button type="submit" name="post_id" value="{{posts.likee}}">Dilike</button>
-        {%endif%}
-    </form>
-   
+</div>
+
 </div>
 {% endblock %}
 
