@@ -26,6 +26,8 @@ def HomeView (request):
                 print(form.cleaned_data["image"],form.cleaned_data["post"])
                 print("*********************************")
                 # post.image = request.POST['image']
+                if form.cleaned_data["image"] is None and form.cleaned_data["post"]=='':
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
                 post.user = request.user
                 post.save()
                 print(post.image)
