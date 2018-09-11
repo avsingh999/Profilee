@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from . import views
+from django.conf.urls import handler404, handler500
 
 urlpatterns = [
     url(r'^$', views.HomeView, name='Myprofile'),

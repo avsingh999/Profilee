@@ -20,6 +20,8 @@ from django.views.generic.base import TemplateView
 from Profilee import views
 from django.conf import settings
 from django.conf.urls.static import static
+# from myapp import views as myapp_views
+from django.conf.urls import handler404, handler500
 
 app_name = 'Myprofile'
 
@@ -35,6 +37,8 @@ urlpatterns = [
    
 
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+handler404 = '.accounts.views.handler404'
+handler500 = 'accounts.views.handler500'

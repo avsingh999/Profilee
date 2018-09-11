@@ -11,6 +11,19 @@ from accounts.models import UserProfile
 import json
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+def handler404(request, *args, **argv):
+    response = render_to_response('404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+def handler500(request, *args, **argv):
+    response = render_to_response('500.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response
+
 
 def HomeView (request):
     template_name = 'home/home.html'
@@ -22,9 +35,9 @@ def HomeView (request):
             postcommenting = PostsData(request.POST)
             if form.is_valid():
                 post =  form.save(commit=False)
-                print("*********************************")
-                print(form.cleaned_data["image"],form.cleaned_data["post"])
-                print("*********************************")
+                # print("*********************************")
+                # print(form.cleaned_data["image"],form.cleaned_data["post"])
+                # print("*********************************")
                 # post.image = request.POST['image']
                 if form.cleaned_data["image"] is None and form.cleaned_data["post"]=='':
                     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -39,7 +52,18 @@ def HomeView (request):
             form = HomeForm()
             postcommenting = PostsData()
             posts = Post.objects.all()
-            comments = Comments.objects.all()  
+            comments = Comments.objects.all()
+            likepost = Like.objects.all().filter(user=request.user)
+            like = []
+            for i in likepost:
+                if i.post in posts:
+                    like.append(get_object_or_404(Post,pk=i.post.id))
+                    print("hh bhai")
+                else:
+                    print("nhi hh bro")
+            # like = get_object_or_404(Post,pk=likepost.post.id)
+            print(like)
+            # print(posts)
             posts=posts[::-1]
             page = request.GET.get('page', 1)
             paginator = Paginator(posts, 6)
@@ -50,7 +74,7 @@ def HomeView (request):
             except EmptyPage:
                 posts = paginator.page(paginator.num_pages)
             print(userinfo)
-            args =  {'form':form,'postcommenting':postcommenting,'posts':posts, 'comments':comments, 'userinfo':userinfo[0]}
+            args =  {'form':form,'postcommenting':postcommenting,'posts':posts, 'comments':comments, 'userinfo':userinfo[0],'like':like}
             return render(request, template_name,args)
     else:
         return redirect('/')

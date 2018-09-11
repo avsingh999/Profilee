@@ -91,14 +91,15 @@
         
                                         </p> 
                                 </div>
-                                                     
                             </div>
                             <hr/>
                             <div class="row" style="margin:20px; padding:0px;">
                                     <p style="font-size:16px;">{{post.likee}}</p>
                                             <form id="likes"  method="POST">
                                                     {% csrf_token %}
-                                                    {% if not like %}
+                                                     <!-- {{like.post}} -->
+
+                                                    {% if not post in like %}
                                                     <button type="submit" name="post_id" value="{{posts.likee}}" style="background:#fff; border:#fff;">
                                                         <i class="material-icons ">favorite_border</i>
                                                     </button>
