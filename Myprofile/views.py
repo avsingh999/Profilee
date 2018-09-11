@@ -141,7 +141,68 @@ def viewpost(request,id):
 
     #     args =  {'postcommenting': postcommenting,'posts':posts,'LD':LD, 'comments':comments,'id':id}
     #     return render(request, 'home/viewpost.html', args)
-
+def likepost(request, id):
+    template_name = 'home/home.html'
+    userinfo = UserProfile.objects.all().filter(user=request.user)
+    print(userinfo[0])
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            posts = get_object_or_404(Post,pk=id)
+            findlike = Like.objects.all().filter(post_id=posts.id,user=request.user)
+            print(findlike)
+            print("before ", posts.likee)
+            if(len(findlike)==0):
+                posts.likee+=1
+                tolike = Like()
+                tolike.count_l = posts.likee
+                tolike.user = request.user
+                tolike.post = posts
+                posts.save()
+                tolike.save()
+                LD=False
+            else:
+                posts.likee-=1
+                dislike = Dislike()
+                dislike.count_d = posts.likee
+                dislike.user = request.user
+                dislike.post = posts
+                dislike.save()
+                posts.save()
+                LD=True
+                findlike.delete()
+            print(posts.likee)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            form = HomeForm()
+            postcommenting = PostsData()
+            posts = Post.objects.all()
+            comments = Comments.objects.all()
+            likepost = Like.objects.all().filter(user=request.user)
+            like = []
+            for i in likepost:
+                if i.post in posts:
+                    like.append(get_object_or_404(Post,pk=i.post.id))
+                    print("hh bhai")
+                else:
+                    print("nhi hh bro")
+            # like = get_object_or_404(Post,pk=likepost.post.id)
+            print(like)
+            # print(posts)
+            posts=posts[::-1]
+            page = request.GET.get('page', 1)
+            paginator = Paginator(posts, 6)
+            try:
+                posts = paginator.page(page)
+            except PageNotAnInteger:
+                posts = paginator.page(1)
+            except EmptyPage:
+                posts = paginator.page(paginator.num_pages)
+            print(userinfo)
+            args =  {'form':form,'postcommenting':postcommenting,'posts':posts, 'comments':comments, 'userinfo':userinfo[0],'like':like}
+            return render(request, template_name,args)
+    else:
+        return redirect('/')
+    
 
 
 def commentpost(request,id):

@@ -95,7 +95,7 @@
                             <hr/>
                             <div class="row" style="margin:20px; padding:0px;">
                                     <p style="font-size:16px;">{{post.likee}}</p>
-                                            <form id="likes"  method="POST">
+                                            <form id="likes" action="{% url 'likepost' post.id %}" method="POST">
                                                     {% csrf_token %}
                                                      <!-- {{like.post}} -->
 
@@ -110,16 +110,17 @@
                                                     {%endif%}
                                             </form>
                                     <div style="margin-bottom:30px; margin-left:px;">
-                                            <button type="submit" data-toggle="collapse" data-target="#demo" name="post_id" value="{{posts.likee}}" style="background:#fff; border:#fff;">
-                                                <i class="material-icons " style="margin-top:2px;">
-                                                    comment
-                                                </i>
-                                            </button>                      
+                                        <button type="submit" data-toggle="collapse" data-target="#demo" name="post_id" value="{{posts.likee}}" style="cursor:pointer;background:#fff; border:#fff;">
+                                            <i class="material-icons " >
+                                                comment
+                                            </i>
+                                        </button>                           
                                     </div>
                                     
                             </div>
                         </div>    
                     </div>
+                    
                 {% endfor %}
             </div>
             <div class="loading" style="display: none;">

@@ -24,21 +24,21 @@ class Post(models.Model):
     date = models.DateTimeField(default=datetime.now,blank=True)
 
 class Comments(models.Model):
-    comment = models.CharField(max_length=100)
+    comment = models.CharField(max_length=100,null=True, blank=True,)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     date = models.DateTimeField(default=datetime.now,blank=True)
 
 
 class Like(models.Model):
-    count_l = models.IntegerField(default=0)
+    count_l = models.IntegerField(default=0,null=True, blank=True,)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
 
 
 class Dislike(models.Model):
-    count_d = models.IntegerField(default=0)
+    count_d = models.IntegerField(default=0, null=True, blank=True,)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
